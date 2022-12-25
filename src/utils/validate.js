@@ -21,6 +21,8 @@ const dictionary = {
             ip: '输入IP地址',
             httpPort: '输入HTTP端口',
             username: '输入用户昵称',
+            name:"输入姓名",
+            phone:"输入电话",
             password: '输入密码',
             passwordAgain: "确认密码",
             mobile: '输入手机号码',

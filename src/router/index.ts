@@ -9,39 +9,7 @@ const routes: Array<RouteConfig> = [
   {
     // 重定向首页
     path: '/',
-    redirect: '/homePage'
-  },
-  {
-    path: '/homePage',
-    name: 'homePage',
-    component: () => import('../views/HomePage.vue'),
-    // children: [
-    //   {
-    //     path: 'home',
-    //     name: 'home',
-    //     component: () => import('../components/Home.vue'),
-    //     children: [
-    //       {
-    //         path: 'hometicket',
-    //         name: 'hometicket',
-    //         component: () => import("../components/HomeTicket.vue"),
-    //         children: [
-    //           {
-    //             path: ":id",
-    //             name: 'product',
-    //             component: () => import("../components/Product.vue"),
-    //             props: true
-    //           }
-    //         ]
-    //       }
-    //     ]
-    //   },
-    //   {
-    //     path: 'ticket',
-    //     name: 'ticket',
-    //     component: () => import('../components/Ticket.vue')
-    //   }
-    // ]
+    redirect: '/home'
   },
   {
     path: '/login',
@@ -59,65 +27,124 @@ const routes: Array<RouteConfig> = [
     component: () => import("../views/common/ForgetPasswordView.vue")
   },
   {
-    path: '/test',
-    name: 'test',
-    component: () => import("../views/Navigation.vue")
+    path: '/chat',
+    name: 'chat',
+    component: () => import('../views/Chat.vue')
   },
+  //查看商品的消息
   {
-    //个人信息
-    path: '/showPersonal',
-    name: 'showPersonal',
-    component: () => import("../views/personal/showPersonal/ShowPersonalView.vue"),
-    children: [
+    path: '/check',
+    name: 'check',
+    component: () => import('../views/Check.vue'),
+    children:[
       {
-        path: "/showPersonalChoose",
-        name: 'showPersonalChoose',
-        component: () => import("../components/LeftChoose.vue"),
-        children: [
-          {
-            path: "/myOrders",
-            name: 'myOrders',
-            component: () => import("../components/my/MyOrders.vue"),
-          },
-          {
-            path: "/myTicket",
-            name: 'myTicket',
-            component: () => import("../components/my/MyTicket.vue"),
-          },
-          {
-            path: "/myHotel",
-            name: 'myHotel',
-            component: () => import("../components/my/MyHotel.vue"),
-          },
-          {
-            path: "/myHoliday",
-            name: 'myHoliday',
-            component: () => import("../components/my/MyHoliday.vue"),
-          },
-          {
-            path: "/strategy",
-            name: 'strategy',
-            component: () => import("../components/my/Strategy.vue"),
-          }
-        ]
-      }
+        path: 'hotel',
+        name: 'hotel',
+        component: () => import('../views/check/Hotel.vue'),
+      },
+      {
+        path: 'attraction',
+        name: 'attraction',
+        component: () => import('../views/check/Attraction.vue'),
+      },
     ]
   },
+  //订单
   {
-    path: '/news',
-    name: 'news',
-    component: () => import("../views/personal/news/News.vue")
+    path:"/order",
+    name:"order",
+    component: () => import('../views/Order.vue'),
+    children:[
+      {
+        path: 'hotel',
+        name: 'hotel',
+        component: () => import('../views/order/Hotel.vue'),
+      }, 
+      {
+        path: 'orderOver',
+        name: 'orderOver',
+        component: () => import('../views/order/OrderOver.vue'),
+      },
+      {
+        path: 'ticket',
+        name: 'ticket',
+        component: () => import('../views/order/Ticket.vue'),
+      },
+    ]
   },
+  //首页
   {
-    path: '/changeNews',
-    name: 'changeNews',
-    component: () => import("../views/personal/changeNews/ChangeNews.vue")
+    path: '/',
+    name: 'homePage',
+    component: () => import('../views/HomePage.vue'),
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: () => import('../views/pages/Home.vue'),
+      },
+      {
+        path: 'ticket',
+        name: 'ticket',
+        component: () => import('../views/pages/Ticket.vue')
+      },
+      {
+        path: 'hotel',
+        name: 'hotel',
+        component: () => import('../views/pages/Hotel.vue'),
+      },
+      {
+        path: 'train',
+        name: 'train',
+        component: () => import('../views/pages/Train.vue'),
+      },
+      {
+        path: 'railway',
+        name: 'railway',
+        component: () => import('../views/pages/Railway.vue'),
+      },
+      {
+        path: 'attraction',
+        name: 'attraction',
+        component: () => import('../views/pages/Attraction.vue'),
+      },
+    ]
   },
+  //个人信息
   {
-    path: '/account',
-    name: 'account',
-    component: () => import("../views/personal/account/Account.vue")
-  }
+    path: '/showPersonal',
+    name: 'showPersonal',
+    redirect: '/showPersonal/personalNews',
+    component: () => import("../views/ShowPersonal.vue"),
+    children: [
+      {
+        path: 'personalNews',
+        name: 'personNews',
+        component: () => import('../views/personal/PersonalNews.vue')
+      },
+      {
+        path: 'accountSeting',
+        name: 'accountSeting',
+        component: () => import('../views/personal/AccountSeting.vue')
+      },
+      {
+        path: 'account',
+        name: 'account',
+        component: () => import('../views/personal/Account.vue')
+      },
+      {
+        path: 'personalMessage',
+        name: 'personMessage',
+        component: () => import('../views/personal/PersonalMessage.vue')
+      },
+    ]
+  },
+  //测试
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('../views/Test.vue')
+  },
 ]
 
 const router = new VueRouter({
@@ -129,7 +156,7 @@ const router = new VueRouter({
 //设置全局守卫来判断是否存在token，不存在就返回登录页
 router.beforeEach((to, from, next) => {
   //to到哪儿  from从哪儿离开  next跳转 为空就是放行  
-  if (to.path === '/login' || to.path == '/homePage' || to.path == '/register') {
+  if (to.path === '/login' || to.path == '/home' || to.path == '/register') {
     //如果跳转为登录，就放行 
     next();
   } else {

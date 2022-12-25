@@ -3,7 +3,7 @@
     <div class="row">
       <!-- 左边照片区 -->
       <div class="show_news">
-        <img class="img-thumbnail" src= imgSrc />
+        <img class="img-thumbnail" src="../../assets/picture/01.jpg" />
       </div>
       <!-- 登录表单区 -->
       <form ref="form" class="show_news from-inline">
@@ -42,33 +42,32 @@
           <button @click="login" type="button" class="btn btn-default">
             登录
           </button>
-          <button @click="reset"  class="btn btn-default">重置</button>
+          <button @click="reset" class="btn btn-default">重置</button>
         </div>
         <div class="bottom">
           <!-- 注册 -->
-          <router-link :to="{path:'/register'}">注册</router-link>
+          <router-link :to="{ path: '/register' }">注册</router-link>
           <!-- 忘记密码 -->
-          <router-link :to="{path:'/forgetpassword'}">忘记密码？</router-link>
+          <router-link :to="{ path: '/forgetpassword' }"
+            >忘记密码？</router-link
+          >
         </div>
       </form>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
 import { defineComponent } from "@vue/composition-api";
-import imgHref from '../../assets/picture/01.jpg';
-
 export default defineComponent({
   data() {
     return {
-      loginForm: [           
+      loginForm: [
         {
           email: null,
           password: null,
         },
       ],
-      imgSrc : imgHref
     };
   },
   setup: {},
@@ -79,23 +78,27 @@ export default defineComponent({
     login() {
       this.$validator.validate().then((valid) => {
         console.log(valid);
-        if(valid){//校验正确，向后端发请求
-          this.$http.post("/user/login",{
-            email : this.loginForm.email,
-            password : this.loginForm.password
-          })
-          .then((response) =>{
-            console.log(response.data)
-            let message = response.data;
-            if(message.code ==0 ){
-              alert(message.msg)
-            }else{
+        if (valid) {
+          //校验正确，向后端发请求
+          this.$http
+            .post("/user/login", {
+              email: this.loginForm.email,
+              password: this.loginForm.password,
+            })
+            .then((response) => {
+              console.log(response.data);
+              let message = response.data;
+              if (message.code == 0) {
+                alert(message.msg);
+              } else {
                 //登录成功，取出token,将token保存在localStorage
-                localStorage.setItem("token",message.data.token)
-                alert("登录成功,返回主界面")
-                window.location.href = '/homePage';
-            }
-          })
+                localStorage.setItem("token", message.data.token);
+                console.log(message.data)
+                localStorage.setItem("user",JSON.stringify(message.data));
+                alert("登录成功,返回主界面");
+                window.location.href = "/home";
+              }
+            });
         }
       });
     },
